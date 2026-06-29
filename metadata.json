@@ -1,0 +1,6 @@
+{
+  "name": "Punta Cana Boat Adventures",
+  "description": "Premium boat tours, private yacht charters, catamaran cruises, and snorkeling adventures in Punta Cana, Dominican Republic.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
