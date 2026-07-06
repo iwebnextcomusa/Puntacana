@@ -1,9 +1,19 @@
-import React from "react";
-import { Phone, Calendar, Star, Compass, Award, ShieldCheck, Ship, Shield } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { Phone, Calendar, Star, Compass, Award, ShieldCheck, Ship, Shield, Volume2, VolumeX } from "lucide-react";
 import { motion } from "motion/react";
 import heroBg from "../assets/images/hero_background_1782762036664.jpg";
 
 export default function Hero() {
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
+
   const handleScrollToContact = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
     e.preventDefault();
     const contactSection = document.querySelector("#contact");
@@ -21,19 +31,52 @@ export default function Hero() {
       id="home"
       className="relative min-h-screen flex flex-col justify-between overflow-hidden bg-[#011627]"
     >
-      {/* Background Image with Parallax & Dark Gradients */}
+      {/* Background Video/Image with Parallax & Dark Gradients */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={heroBg}
-          alt="Luxury Speedboat cruising in crystal clear turquoise water in Punta Cana"
-          className="w-full h-full object-cover object-center scale-105 animate-zoom"
-          referrerPolicy="no-referrer"
-        />
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted={isMuted}
+          playsInline
+          poster={heroBg}
+          className="w-full h-full object-cover object-center"
+        >
+          <source
+            src="https://n0depdr1cxzp5kie.public.blob.vercel-storage.com/Punta_Cana_Boat_Adventures_video_202607062202.mp4"
+            type="video/mp4"
+          />
+          <img
+            src={heroBg}
+            alt="Luxury Speedboat cruising in crystal clear turquoise water in Punta Cana"
+            className="w-full h-full object-cover object-center"
+          />
+        </video>
         {/* Multilayer Gradients for high-end text contrast */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#011627]/95 via-[#011627]/75 to-[#011627]/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#011627] via-transparent to-[#011627]/40" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(64,224,208,0.15),transparent_50%)]" />
       </div>
+
+      {/* Modern Mute/Unmute toggle control button */}
+      <button
+        onClick={toggleMute}
+        className="absolute top-28 right-6 md:right-8 z-30 p-3.5 rounded-full bg-[#011627]/80 hover:bg-[#FF7F50] text-white border border-white/10 backdrop-blur-md shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer flex items-center gap-2 group"
+        aria-label={isMuted ? "Unmute background video" : "Mute background video"}
+        id="video-mute-toggle"
+      >
+        {isMuted ? (
+          <>
+            <VolumeX className="w-5 h-5 text-gray-300 group-hover:text-white" />
+            <span className="text-[10px] font-mono uppercase tracking-wider font-bold max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">Unmute Video</span>
+          </>
+        ) : (
+          <>
+            <Volume2 className="w-5 h-5 text-[#40E0D0] group-hover:text-white" />
+            <span className="text-[10px] font-mono uppercase tracking-wider font-bold max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">Mute Video</span>
+          </>
+        )}
+      </button>
 
       {/* Floating Animated Bubbles / Ambient Glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
